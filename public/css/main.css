@@ -1,0 +1,61 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.sub-header {
+    padding-bottom: 10px;
+}
+.sub-header div {
+    float: right;
+    margin-right: 20px;
+}
+
+.center {
+    text-align: center;
+}
+.right {
+    text-align: right;
+}
+.actions {
+    width: 200px;
+}
+td span {
+    margin: 0 30px 0 10px;
+}
+
+.error {
+    color: #cf4432;
+}
+
+.username {
+    width: 100px;
+}
+.email {
+    width: 170px;
+}
+.first-name {
+    width: 150px;
+}
+.last-name {
+    width: 150px;
+}
+.mobile-phone {
+    width: 100px;
+}
+.activ {
+    width: 100px;
+}
+.roles {
+    width: 150px;
+}
+
+form table td {
+    padding: 2px 2px;
+}
+
+.notification {
+    color: red;
+    font-weight: bold;
+}
