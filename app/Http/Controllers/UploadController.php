@@ -30,7 +30,7 @@ class UploadController extends Controller {
         $destinationPath = 'uploads/';
         if($request->file('crop')) {
             $file = $request->file('crop');
-            $filename = User::getSignedInUserId().'_'.$file->getClientOriginalName();
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
                 $uploads = Upload::getUploads();
@@ -46,7 +46,7 @@ class UploadController extends Controller {
         }
         if($request->file('soil')) {
             $file = $request->file('soil');
-            $filename = User::getSignedInUserId().'_'.$file->getClientOriginalName();
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
                 $uploads = Upload::getUploads();
@@ -62,7 +62,7 @@ class UploadController extends Controller {
         }
         if($request->file('efficiency')) {
             $file = $request->file('efficiency');
-            $filename = User::getSignedInUserId().'_'.$file->getClientOriginalName();
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
                 $uploads = Upload::getUploads();
@@ -94,7 +94,7 @@ class UploadController extends Controller {
         }
         if($request->file('kml')) {
             $file = $request->file('kml');
-            $filename = User::getSignedInUserId().'_'.$file->getClientOriginalName();
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
                 $uploads = Upload::getUploads();
@@ -114,7 +114,7 @@ class UploadController extends Controller {
         }
         if($request->file('channelConnex')) {
             $file = $request->file('channelConnex');
-            $filename = User::getSignedInUserId().'_'.$file->getClientOriginalName();
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
                 $uploads = Upload::getUploads();
@@ -130,7 +130,7 @@ class UploadController extends Controller {
         }
         if($request->file('connectivity')) {
             $file = $request->file('connectivity');
-            $filename = User::getSignedInUserId().'_'.$file->getClientOriginalName();
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
                 $uploads = Upload::getUploads();
@@ -183,13 +183,13 @@ class UploadController extends Controller {
                     $u->state = $state;
                     $u->save();
                     switch ($i) {
-                        case 0: return $u->userId.'_'.$u->crop; break;
-                        case 1: return $u->userId.'_'.$u->soil; break;
-                        case 2: return $u->userId.'_'.$u->efficiency; break;
-                        case 3: return $u->userId.'_'.$u->model; break;
-                        case 4: return $u->userId.'_'.$u->kml; break;
-                        case 5: return $u->userId.'_'.$u->channelConnex; break;
-                        case 6: return $u->userId.'_'.$u->connectivity; break;
+                        case 0: return $u->userId.'$'.$u->crop; break;
+                        case 1: return $u->userId.'$'.$u->soil; break;
+                        case 2: return $u->userId.'$'.$u->efficiency; break;
+                        case 3: return $u->userId.'$'.$u->model; break;
+                        case 4: return $u->userId.'$'.$u->kml; break;
+                        case 5: return $u->userId.'$'.$u->channelConnex; break;
+                        case 6: return $u->userId.'$'.$u->connectivity; break;
                     }
                 }
         }
@@ -200,7 +200,7 @@ class UploadController extends Controller {
         $user_id = $request->get('user_id');
         if($request->file('file')) {
             $file = $request->file('file');
-            $filename = $user_id.'_'.$file->getClientOriginalName();
+            $filename = $user_id.'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
                 $uploads = Upload::getUploadsFromUserId($user_id);

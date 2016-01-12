@@ -90,7 +90,7 @@
                         <td class="center">{{ $u->model }}</td>
                         <td class="center">{{ $u->kml }}</td>
                         <td class="center">
-                            <a href="{{ env('PUBLIC_ROOT').'/output/'.$u->userId.'_'.$u->output }}" target="_blank">{{ $u->output }}</a>
+                            <a href="{{ env('PUBLIC_ROOT').'/output/'.$u->userId.'$'.$u->output }}" target="_blank">{{ $u->output }}</a>
                         </td>
                     </tr>
                     <tr>

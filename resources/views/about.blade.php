@@ -10,7 +10,8 @@
     <div class="row">
         <div class="col-md-12">
             <h2>About</h2>
-            <p>Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info.</p>
+            <p>About Page</p>
+<!--            <p>Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info. Some info. Some info. Some info. Som info.</p>-->
             <!--                <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>-->
         </div>
 <!--        <div class="col-md-4">-->
@@ -24,6 +25,8 @@
             <!--                <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>-->
 <!--        </div>-->
     </div>
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
     <hr>
 
