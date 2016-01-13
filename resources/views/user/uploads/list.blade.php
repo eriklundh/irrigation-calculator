@@ -67,7 +67,7 @@
                     <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th></th>
+                        <th class="first-column"></th>
                         <th class="center">ChannelConnex</th>
                         <th class="center">Connectivity</th>
                         <th class="center">Crop</th>
@@ -81,7 +81,7 @@
                     <tbody>
                     @foreach($uploads as $u)
                     <tr>
-                        <td>File:</td>
+                        <td class="bold">File Name:</td>
                         <td class="center">{{ $u->channelConnex }}</td>
                         <td class="center">{{ $u->connectivity }}</td>
                         <td class="center">{{ $u->crop }}</td>
@@ -94,7 +94,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Uploaded:</td>
+                        <td class="bold">Upload Time:</td>
                         <td class="center">{{ $u->channelConnex_at }}</td>
                         <td class="center">{{ $u->connectivity_at }}</td>
                         <td class="center">{{ $u->crop_at }}</td>
@@ -105,7 +105,7 @@
                         <td class="center">{{ $u->output_at }}</td>
                     </tr>
                     <tr>
-                        <td>State:</td>
+                        <td class="bold">State:</td>
                         <td class="center">
                             @if($state_arr[5]==0)
                                 Local
