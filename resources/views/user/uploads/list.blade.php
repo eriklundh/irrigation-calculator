@@ -12,16 +12,6 @@
                     <table>
                         <tbody>
                         <tr>
-                            <td><span>ChannelConnex :</span></td>
-                            <td><input type="file" name="channelConnex"></td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td><span>Connectivity :</span></td>
-                            <td><input type="file" name="connectivity"></td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
                             <td><span>Crop :</span></td>
                             <td><input type="file" name="crop"></td>
                             <td>&nbsp;</td>
@@ -29,11 +19,33 @@
                         <tr>
                             <td><span>Soil :</span></td>
                             <td><input type="file" name="soil"></td>
-                            <td><button class="btn btn-info btn-sm" type="submit">Upload</button></td>
+                            <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td><span>Efficiency :</span></td>
                             <td><input type="file" name="efficiency"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><span>Yield :</span></td>
+                            <td><input type="file" name="yield"></td>
+                            <td><button class="btn btn-info btn-sm" type="submit">Upload</button></td>
+                        </tr>
+                        <tr>
+                            <td><span>Climate Model :</span></td>
+                            <td>
+                                <select name="climate_model" class="form-control" style="width:190px">
+                                    <option value="Choose">Choose</option>
+                                    @foreach($climateModels as $cm)
+                                        <option value="{{ $cm }}">{{ $cm }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><span>Weather Data :</span></td>
+                            <td><input type="file" name="weather_data"></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -68,11 +80,12 @@
                     <thead>
                     <tr>
                         <th class="first-column"></th>
-                        <th class="center">ChannelConnex</th>
-                        <th class="center">Connectivity</th>
                         <th class="center">Crop</th>
                         <th class="center">Soil</th>
                         <th class="center">Efficiency</th>
+                        <th class="center">Yield</th>
+                        <th class="center">Climate Model</th>
+                        <th class="center">Weather Data</th>
                         <th class="center">Model</th>
                         <th class="center">KML</th>
                         <th class="center">Output</th>
@@ -82,11 +95,12 @@
                     @foreach($uploads as $u)
                     <tr>
                         <td class="bold">File Name:</td>
-                        <td class="center">{{ $u->channelConnex }}</td>
-                        <td class="center">{{ $u->connectivity }}</td>
                         <td class="center">{{ $u->crop }}</td>
                         <td class="center">{{ $u->soil }}</td>
                         <td class="center">{{ $u->efficiency }}</td>
+                        <td class="center">{{ $u->yield }}</td>
+                        <td class="center">{{ $u->climate_model }}</td>
+                        <td class="center">{{ $u->weather_data }}</td>
                         <td class="center">{{ $u->model }}</td>
                         <td class="center">{{ $u->kml }}</td>
                         <td class="center">
@@ -95,85 +109,34 @@
                     </tr>
                     <tr>
                         <td class="bold">Upload Time:</td>
-                        <td class="center">{{ $u->channelConnex_at }}</td>
-                        <td class="center">{{ $u->connectivity_at }}</td>
                         <td class="center">{{ $u->crop_at }}</td>
                         <td class="center">{{ $u->soil_at }}</td>
                         <td class="center">{{ $u->efficiency_at }}</td>
+                        <td class="center">{{ $u->yield_at }}</td>
+                        <td class="center">{{ $u->climate_model_at }}</td>
+                        <td class="center">{{ $u->weather_data_at }}</td>
                         <td class="center">{{ $u->model_at }}</td>
                         <td class="center">{{ $u->kml_at }}</td>
                         <td class="center">{{ $u->output_at }}</td>
                     </tr>
                     <tr>
                         <td class="bold">State:</td>
+                        @for ($i = 0; $i < 8; $i++)
+                            <td class="center">
+                                @if($state_arr[$i]==0)
+                                    Local
+                                @elseif($state_arr[$i]==1)
+                                    AWS
+                                @elseif($state_arr[$i]==2)
+                                    HS
+                                @endif
+                            </td>
+                        @endfor
                         <td class="center">
-                            @if($state_arr[5]==0)
-                                Local
-                            @elseif($state_arr[5]==1)
-                                iMoMo Server
-                            @elseif($state_arr[5]==2)
-                                HydroSolutions Server
-                            @endif
-                        </td>
-                        <td class="center">
-                            @if($state_arr[6]==0)
-                                Local
-                            @elseif($state_arr[6]==1)
-                                iMoMo Server
-                            @elseif($state_arr[6]==2)
-                                HydroSolutions Server
-                            @endif
-                        </td>
-                        <td class="center">
-                            @if($state_arr[0]==0)
-                                Local
-                            @elseif($state_arr[0]==1)
-                                iMoMo Server
-                            @elseif($state_arr[0]==2)
-                                HydroSolutions Server
-                            @endif
-                        </td>
-                        <td class="center">
-                            @if($state_arr[1]==0)
-                                Local
-                            @elseif($state_arr[1]==1)
-                                iMoMo Server
-                            @elseif($state_arr[1]==2)
-                                HydroSolutions Server
-                            @endif
-                        </td>
-                        <td class="center">
-                            @if($state_arr[2]==0)
-                                Local
-                            @elseif($state_arr[2]==1)
-                                iMoMo Server
-                            @elseif($state_arr[2]==2)
-                                HydroSolutions Server
-                            @endif
-                        </td>
-                        <td class="center">
-                            @if($state_arr[3]==0)
-                                Local
-                            @elseif($state_arr[3]==1)
-                                iMoMo Server
-                            @elseif($state_arr[3]==2)
-                                HydroSolutions Server
-                            @endif
-                        </td>
-                        <td class="center">
-                            @if($state_arr[4]==0)
-                                Local
-                            @elseif($state_arr[4]==1)
-                                iMoMo Server
-                            @elseif($state_arr[4]==2)
-                                HydroSolutions Server
-                            @endif
-                        </td>
-                        <td class="center">
-                            @if($state_arr[7]==0)
+                            @if($state_arr[8]==0)
                                 Not Ready
-                            @elseif($state_arr[7]==2)
-                                iMoMo Server
+                            @elseif($state_arr[8]==2)
+                                <span style="color:red">Ready</span>
                             @endif
                         </td>
                     </tr>

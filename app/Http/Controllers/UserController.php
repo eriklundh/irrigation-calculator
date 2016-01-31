@@ -77,7 +77,7 @@ class UserController extends Controller {
 
             $upload = Upload::create(array(
                 'userId' => $user->id,
-                'state'  => '0-0-0-0-0-0-0-0'
+                'state'  => '0-0-0-0-0-0-0-0-0'
             ));
         }
 

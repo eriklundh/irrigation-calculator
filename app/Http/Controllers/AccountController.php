@@ -35,7 +35,8 @@ class AccountController extends Controller {
             if($auth) {
                 //Logging::sign_in_success();
                 // redirect to the intended page
-                return redirect()->intended('/');
+                //return redirect()->intended('/');
+                return redirect()->route('user-uploads-list');
             } else {
                 //Logging::sign_in_fail($request->get('username'));
                 return  redirect()->route('account-sign-in')
@@ -94,7 +95,7 @@ class AccountController extends Controller {
     }
 
     public function getForgotPassword() {
-        return View::make('account.forgot');
+        return view('account.forgot');
     }
     public function postForgotPassword() {
         $validator = Validator::make(Input::all(),

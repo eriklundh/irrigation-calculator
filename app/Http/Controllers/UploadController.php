@@ -7,21 +7,27 @@ use App\Upload;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;
+use Auth;
 
 class UploadController extends Controller {
 
+    // uploads' list page
     public function getList() {
+        if(Auth::guest())
+            return redirect()->route('account-sign-in');
         $user_role_name = User::getUserRoleName();
         $models = Upload::getModels();
+        $climateModels = Upload::getClimateModels();
         $uploads = Upload::getUploads();
         $upload = $uploads->first();
         $state_arr = explode('-', $upload->state);
         return view('user.uploads.list', compact('user_role_name'), compact('models'))
+                ->with(compact('climateModels'))
                 ->with(compact('uploads'))
                 ->with(compact('state_arr'));
     }
 
-    // receives all uploads of the user
+    // upload from the web site
     public function upload(Request $request) {
         $uploads = Upload::getUploads();
         $upload = $uploads->first();
@@ -76,6 +82,54 @@ class UploadController extends Controller {
                     ->with('global', 'The efficiency file cannot be uploaded. Please try again!');
             }
         }
+        if($request->file('yield')) {
+            $file = $request->file('yield');
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
+            $upload_success = $file->move($destinationPath, $filename);
+            if( $upload_success ) {
+                $uploads = Upload::getUploads();
+                $upload = $uploads->first();
+                $upload->yield = $file->getClientOriginalName();
+                $upload->yield_at = date('Y-m-d H:i:s');
+                $upload->save();
+                $pre_state_arr[3]=1;
+            } else {
+                return  redirect()->route('user-uploads-list')
+                    ->with('global', 'The yield file cannot be uploaded. Please try again!');
+            }
+        }
+        if($request->get('climate_model')!='Choose') {
+            $file = fopen("uploads/".User::getSignedInUserId()."_"."ModelType.txt", "w+") or exit("Unable to open txt file!");
+            $climateModels = Upload::getClimateModels();
+            foreach($climateModels as $cm)
+                if($cm==$request->get('climate_model'))
+                    fwrite($file, $cm."\t\t1");
+                else
+                    fwrite($file, $cm."\t\t0");
+            fclose($file);
+            $uploads = Upload::getUploads();
+            $upload = $uploads->first();
+            $upload->climate_model = 'ModelType.txt';
+            $upload->climate_model_at = date('Y-m-d H:i:s');
+            $upload->save();
+            $pre_state_arr[4]=1;
+        }
+        if($request->file('weather_data')) {
+            $file = $request->file('weather_data');
+            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
+            $upload_success = $file->move($destinationPath, $filename);
+            if( $upload_success ) {
+                $uploads = Upload::getUploads();
+                $upload = $uploads->first();
+                $upload->weather_data = $file->getClientOriginalName();
+                $upload->weather_data_at = date('Y-m-d H:i:s');
+                $upload->save();
+                $pre_state_arr[5]=1;
+            } else {
+                return  redirect()->route('user-uploads-list')
+                    ->with('global', 'The weather data file cannot be uploaded. Please try again!');
+            }
+        }
         if($request->get('model')!='Choose') {
             $file = fopen("uploads/".User::getSignedInUserId()."_"."IC-ClimIn.txt", "w+") or exit("Unable to open txt file!");
             $models = Upload::getModels();
@@ -90,7 +144,7 @@ class UploadController extends Controller {
             $upload->model = 'IC-ClimIn.txt';
             $upload->model_at = date('Y-m-d H:i:s');
             $upload->save();
-            $pre_state_arr[3]=1;
+            $pre_state_arr[6]=1;
         }
         if($request->file('kml')) {
             $file = $request->file('kml');
@@ -104,44 +158,12 @@ class UploadController extends Controller {
                 $upload->output = '';
                 $upload->output_at = '';
                 $upload->save();
-                $pre_state_arr[4]=1;
-                $pre_state_arr[7]=0;
+                $pre_state_arr[7]=1;
+                $pre_state_arr[8]=0;
 
             } else {
                 return  redirect()->route('user-uploads-list')
                     ->with('global', 'The kml file cannot be uploaded. Please try again!');
-            }
-        }
-        if($request->file('channelConnex')) {
-            $file = $request->file('channelConnex');
-            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
-            $upload_success = $file->move($destinationPath, $filename);
-            if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
-                $upload->channelConnex = $file->getClientOriginalName();
-                $upload->channelConnex_at = date('Y-m-d H:i:s');
-                $upload->save();
-                $pre_state_arr[5]=1;
-            } else {
-                return  redirect()->route('user-uploads-list')
-                    ->with('global', 'The channel connex file cannot be uploaded. Please try again!');
-            }
-        }
-        if($request->file('connectivity')) {
-            $file = $request->file('connectivity');
-            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
-            $upload_success = $file->move($destinationPath, $filename);
-            if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
-                $upload->connectivity = $file->getClientOriginalName();
-                $upload->connectivity_at = date('Y-m-d H:i:s');
-                $upload->save();
-                $pre_state_arr[6]=1;
-            } else {
-                return  redirect()->route('user-uploads-list')
-                    ->with('global', 'The connectivity file cannot be uploaded. Please try again!');
             }
         }
 
@@ -186,10 +208,11 @@ class UploadController extends Controller {
                         case 0: return $u->userId.'$'.$u->crop; break;
                         case 1: return $u->userId.'$'.$u->soil; break;
                         case 2: return $u->userId.'$'.$u->efficiency; break;
-                        case 3: return $u->userId.'$'.$u->model; break;
-                        case 4: return $u->userId.'$'.$u->kml; break;
-                        case 5: return $u->userId.'$'.$u->channelConnex; break;
-                        case 6: return $u->userId.'$'.$u->connectivity; break;
+                        case 3: return $u->userId.'$'.$u->yield; break;
+                        case 4: return $u->userId.'$'.$u->climate_model; break;
+                        case 5: return $u->userId.'$'.$u->weather_data; break;
+                        case 6: return $u->userId.'$'.$u->model; break;
+                        case 7: return $u->userId.'$'.$u->kml; break;
                     }
                 }
         }
@@ -207,7 +230,7 @@ class UploadController extends Controller {
                 $upload = $uploads->first();
                 $pre_state = $upload->state;
                 $pre_state_arr = explode('-', $pre_state);
-                $pre_state_arr[7]=2;
+                $pre_state_arr[8]=2;
                 $upload->output = $file->getClientOriginalName();
                 $upload->output_at = date('Y-m-d H:i:s');
                 $state = $pre_state_arr[0];
@@ -217,6 +240,17 @@ class UploadController extends Controller {
                 $upload->save();
             }
         }
+    }
+
+    // check whether output is ready or not
+    public function checkOutput() {
+        $uploads = Upload::getUploads();
+        $upload = $uploads->first();
+        $state_arr = explode('-', $upload->state);
+        $ready = false;
+        if($state_arr[8]==2) $ready = true;
+        $result = array('ready'=>$ready);
+        return json_encode($result);
     }
 
 }

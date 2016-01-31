@@ -17,7 +17,7 @@
                 <label>
                     <input type="checkbox" value="remember-me" name="remember"> Remember me
                 </label>
-                <a href="{{ URL::route('account-forgot-password') }}">Forgot-password</a>
+<!--                <a href="{{ URL::route('account-forgot-password') }}">Forgot-password</a>-->
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
