@@ -99,7 +99,7 @@ class UploadController extends Controller {
             }
         }
         if($request->get('climate_model')!='Choose') {
-            $file = fopen("uploads/".User::getSignedInUserId()."$"."ClimIn.txt", "w+") or exit("Unable to open txt file!");
+            $file = fopen("uploads/".User::getSignedInUserId()."$"."IC_ClimIn.txt", "w+") or exit("Unable to open txt file!");
             $climateModels = Upload::getClimateModels();
             foreach($climateModels as $cm)
                 if($cm==$request->get('climate_model'))
@@ -109,7 +109,7 @@ class UploadController extends Controller {
             fclose($file);
             $uploads = Upload::getUploads();
             $upload = $uploads->first();
-            $upload->climate_model = 'ClimIn.txt';
+            $upload->climate_model = 'IC_ClimIn.txt';
             $upload->climate_model_at = date('Y-m-d H:i:s');
             $upload->save();
             $pre_state_arr[4]=1;
@@ -131,7 +131,7 @@ class UploadController extends Controller {
             }
         }
         if($request->get('model')!='Choose') {
-            $file = fopen("uploads/".User::getSignedInUserId()."$"."IC_ClimIn.txt", "w+") or exit("Unable to open txt file!");
+            $file = fopen("uploads/".User::getSignedInUserId()."$"."ModelType.txt", "w+") or exit("Unable to open txt file!");
             $models = Upload::getModels();
             foreach($models as $m)
                 if($m==$request->get('model'))
@@ -141,7 +141,7 @@ class UploadController extends Controller {
             fclose($file);
             $uploads = Upload::getUploads();
             $upload = $uploads->first();
-            $upload->model = 'IC_ClimIn.txt';
+            $upload->model = 'ModelType.txt';
             $upload->model_at = date('Y-m-d H:i:s');
             $upload->save();
             $pre_state_arr[6]=1;
