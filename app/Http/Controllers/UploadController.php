@@ -103,9 +103,9 @@ class UploadController extends Controller {
             $climateModels = Upload::getClimateModels();
             foreach($climateModels as $cm)
                 if($cm==$request->get('climate_model'))
-                    fwrite($file, $cm."\t\t1");
+                    fwrite($file, $cm."\t\t1\n");
                 else
-                    fwrite($file, $cm."\t\t0");
+                    fwrite($file, $cm."\t\t0\n");
             fclose($file);
             $uploads = Upload::getUploads();
             $upload = $uploads->first();
@@ -135,9 +135,9 @@ class UploadController extends Controller {
             $models = Upload::getModels();
             foreach($models as $m)
                 if($m==$request->get('model'))
-                    fwrite($file, $m."\t\t1");
+                    fwrite($file, $m."\t\t1\n");
                 else
-                    fwrite($file, $m."\t\t0");
+                    fwrite($file, $m."\t\t0\n");
             fclose($file);
             $uploads = Upload::getUploads();
             $upload = $uploads->first();
