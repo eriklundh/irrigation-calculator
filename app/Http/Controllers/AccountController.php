@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use Auth;
+use App\User;
 
 class AccountController extends Controller {
 
@@ -36,7 +37,10 @@ class AccountController extends Controller {
                 //Logging::sign_in_success();
                 // redirect to the intended page
                 //return redirect()->intended('/');
-                return redirect()->route('user-uploads-list');
+                if(User::getUserRoleName()=='ADMIN')
+                    return redirect()->route('admin-users-list');
+                else if(User::getUserRoleName()=='USER')
+                    return redirect()->route('user-uploads-list');
             } else {
                 //Logging::sign_in_fail($request->get('username'));
                 return  redirect()->route('account-sign-in')
