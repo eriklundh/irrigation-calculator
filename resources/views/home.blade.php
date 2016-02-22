@@ -21,81 +21,81 @@
 <!-- Example row of columns-->
         <div class="row">
             <div class="col-md-12">
-                <h2>1. IRRIGATION DEMAND CALCULATOR</h2>
-                <p>
-                    A tool to calculate the irrigation water demand of a specific crop, on a specific soil under a specific climate.
-                </p>
-                <h3>Motivation</h3>
+                <h3>Using the toolbox:</h3>
                 <p class="justify">
-                    Given the limited water resources of arid and semi-arid regions, it is important to use the available water for irrigation most efficiently. In many regions of the world, information and guidelines on what, when and where to plant crops or on how to allocate water most efficiently are often missing or outdated.
+                    The hydrosolutions Irrigation Toolbox combines physical irrigation demand modeling and yield models  (based on FAO standards) with loss calculations of irrigation water in channels and on the field. It uses freely available weather data from ground stations (WMO) as well as satellite data (ECMWF, NCEP) of climate until one day prior to modeling as well as forecast data (GFS). The user can however also provide own weather data. A detailed description of the model can be found in the <a href="{{ URL::route('about') }}">ABOUT</a> section.
                 </p>
-                <h3>How does it work?</h3>
                 <p class="justify">
-                    Based on long-term climate data, the crop irrigation water demand is simulated according to Allen et al. (1998). For a given specified crop, planting date and soil properties the amount of water needed to maintain soil moisture contents above or equal a water stress threshold is calculated (= irrigation demand) for a crop-specific growing period. Thus, for example the optimal planting date for a certain crop, location and soil can be identified (see Figure 1).
+                    A number of input files are necessary to be able to run the model for your specific location. The format and names of these input files must not be changed except if stated otherwise. These files can be downloaded below, edited and stored on your local device. When starting the model you will be asked to upload each file individually.
                 </p>
-                <img src="{{ asset('img/planting_date.png') }}" class="img-responsive" style="width: 80%; height: 80%; margin: 0 auto">
-                <div style="font-style: italic; text-align: center">
-                    Figure 1: Optimal planting date for maize near the town Arusha, Tanzania
-                </div>
-                <h3>What are the benefits?</h3>
-                <ul>
-                    <li>Evaluation of the optimal crop choice under the given environment conditions.</li>
-                    <li>Evaluation of maximum cultivated area under the given irrigation water availability.</li>
-                    <li>Evaluation of optimal planting dates under the given environment conditions.</li>
-                    <li>Optimal and fair planning of water allocation (on- and off-farm).</li>
-                    <li>Minimization of unproductive losses and conflict due to inequitable water allocation.</li>
-                </ul>
-                <h3>Target audience</h3>
-                <ul>
-                    <li>Institutions responsible for water allocations</li>
-                    <li>Institutions responsible for agricultural advice</li>
-                    <li>Farmers</li>
-                </ul>
 
-                <h2>2. WATER STRESS INDEX</h2>
-                <p class="justify">
-                    Monitoring current soil moisture conditions and water demands via crowd sensing.
-                </p>
-                <h3>Motivation</h3>
-                <p class="justify">
-                    Although farmers have a keen sense on the soil and plant conditions of/on their fields, they still often lack information on how much and at which moment additional irrigation is needed. At the same time, also the water administration lacks this kind of information to efficiently plan water allocations and so to minimize unproductive water losses. Although highly sophisticated soil moisture monitoring systems exist, those are usually associated with high costs and time consuming maintenance.
-                </p>
-                <img src="{{ asset('img/soil_moisture.png') }}" class="img-responsive" style="width: 80%; height: 80%; margin: 0 auto">
-                <div style="font-style: italic; text-align: center">
-                    Figure 2: Reducing the uncertainty of soil moisture simulations through data assimilation with soft sensed measurements.
-                </div>
-                <h3>How does it work?</h3>
-                <p class="justify">
-                    Based on real-time meteorological data (from satellites or stations), farmers can monitor soil moisture conditions and irrigation demands via a soil water model. Given the uncertainty of input and meteorological data, several model realizations are analyzed. Using crowd-sensed soil moisture (using the approach of the University of Zurich), the modeled values can be updated using data assimilation techniques (see figure 2) and the updated values sent to a central database, accessible for farmers and administrations.
-                </p>
-                <h3>What are the benefits?</h3>
-                <ul>
-                    <li>Knowledge about current irrigation demand</li>
-                    <li>Knowledge of spatial distributed current soil moisture conditions and irrigation demand</li>
-                </ul>
-                <h3>Target audience</h3>
-                <ul>
-                    <li>Farmers</li>
-                    <li>Institutions responsible for water allocations</li>
-                </ul>
-                <h5>Using the toolbox:</h5>
-                <p>
-                    To be able to use the Toolbox please request an account by contacting us at <a href="mailto:steiner@hydrosolutions.ch" target="_top">steiner@hydrosolutions.ch</a>. You will then get all necessary access details for the Upload Section.
-                </p>
-                <p>
-                    A number of input files are necessary to be able to run the model for your specific location. These files are shown below.
-                </p>
-                <h5>Templates of input files:</h5>
+                <h3>Templates of input files:</h3>
                 <ul>
                     <li>Crop:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/crops.xlsx' }}" target="_blank">crops.xlsx</a></li>
-                    <li>Soil:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/soils.xlsx' }}" target="_blank">soils.xlsx</a></li>
-                    <li>Efficiency:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/efficiency.xlsx' }}" target="_blank">efficiency.xlsx</a></li>
+                </ul>
+                <img src="{{ asset('img/crops.png') }}" class="img-responsive" style="width: 80%; height: 80%; margin: 0 auto">
+                <br>
+                <p class="justify">
+                    If you want to add a new crop, add it in the last line and make sure that all necessary fields are filled and provide reasonable estimates where no accurate values are available. When adding a new crop make sure that the same crop is added in the <span style="font-style: italic">Yield</span> table as well. A detailed description of the different columns is given in ABOUT.
+                </p>
+                <p class="justify">
+                    The growth length needs to be provided in days in ‘length of growth stages (d) – TOTAL’. The specific columns before defining different stages are given in fractions of 1.
+                </p>
+                <ul>
                     <li>Yield:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/yield.xlsx' }}" target="_blank">yield.xlsx</a></li>
+                </ul>
+                <img src="{{ asset('img/yield.png') }}" class="img-responsive" style="width: 80%; height: 80%; margin: 0 auto">
+                <br>
+                <p class="justify">
+                    Add any new crop at the end of the list. A detailed description of the yield factors is provided in ABOUT. If values are not known fields can be left blank and standard values will be used.
+                </p>
+                <ul>
+                    <li>Soil:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/soils.xlsx' }}" target="_blank">soils.xlsx</a></li>
+                </ul>
+                <img src="{{ asset('img/soils.png') }}" class="img-responsive" style="width: 50%; height: 50%; margin: 0 auto">
+                <br>
+                <p class="justify">
+                    Any new soil type can be added at the end of the list or old values can be changed according to local knowledge.
+                </p>
+                <ul>
+                    <li>Efficiency:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/efficiency.xlsx' }}" target="_blank">efficiency.xlsx</a></li>
+                </ul>
+                <img src="{{ asset('img/efficiency1.png') }}" class="img-responsive" style="width: 50%; height: 50%; margin: 0 auto">
+                <br>
+                <img src="{{ asset('img/efficiency2.png') }}" class="img-responsive" style="width: 50%; height: 50%; margin: 0 auto">
+                <br>
+                <p class="justify">
+                    The efficiency file includes data on channel losses and losses depending on different irrigation types. If you want to make changes ideally contact us beforehand.
+                </p>
+                <ul>
                     <li>Weather Data:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/WeatherData.xlsx' }}" target="_blank">WeatherData.xlsx</a></li>
+                </ul>
+                <img src="{{ asset('img/weather_data.png') }}" class="img-responsive" style="width: 60%; height: 60%; margin: 0 auto">
+                <br>
+                <p class="justify">
+                    You can provide your own weather data in the provided format. Make sure that the date is provided in mm/dd/yyyy. You can provide different stations in different tabs.
+                </p>
+
+                <ul>
                     <li>KML:&nbsp;&nbsp;&nbsp;<a href="{{ env('PUBLIC_ROOT').'/output/IC_Template.kml' }}" target="_blank">IC_Template.kml</a></li>
                 </ul>
-                <p>
+                <p class="justify">
+                    Make sure that your kml file has the Structure of the template file. Ideally use the template file and add your own fields and channels. You can also add additional Schemes as subfolders.
+                </p>
+                <p class="justify">
+                    You can change the name of the kml file to IC_NAME. Make sure that ‘IC_’ stays in the file name. Then change the name of the folder below accordingly. It has to be the same as the kml name. Do not change the name of the ‘Plots’ and ‘Canals’ folder. You can change the name of the ‘Scheme1’ folder and the individual fields and canals but make sure to have no space in the name.
+                </p>
+                <img src="{{ asset('img/kml.png') }}" class="img-responsive" style="width: 40%; height: 40%; margin: 0 auto">
+                <p class="justify">
+                    You can draw the fields as polygons and by clicking on ‘Get Info’ add field information as shown in the image below.
+                </p>
+                <img src="{{ asset('img/google_earth.png') }}" class="img-responsive" style="width: 70%; height: 70%; margin: 0 auto">
+                <br>
+                <p class="justify">
                     Please fill them according to your field site and then proceed to <a href="{{ URL::route('user-uploads-list') }}">uploading</a> your data.
+                </p>
+                <p class="justify">
+                    To be able to use the Toolbox please request an account by contacting us at <a href="mailto:steiner@hydrosolutions.ch" target="_top">steiner@hydrosolutions.ch</a>. You will then get all necessary access details for the Upload Section.
                 </p>
             </div>
         </div>
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-<!--        <hr>-->
+        <hr>
 
         <footer>
             <p>&copy; Hydrosolutions 2015-2016</p>
