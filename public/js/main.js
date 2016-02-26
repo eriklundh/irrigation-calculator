@@ -3,6 +3,8 @@ $( document ).ready(function() {
 
     if (location.href.indexOf("about") >= 0)
         $("#about").addClass("active");
+    else if(location.href.indexOf("templates")>=0)
+        $("#templates").addClass("active");
     else if (location.href.indexOf("contact") >= 0)
         $("#contact").addClass("active");
 

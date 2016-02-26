@@ -100,6 +100,7 @@ Route::group(array('before' => 'guest'), function() {
     Route::get('/account/recover/{code}', array('as' => 'account-recover', 'uses' => 'AccountController@getRecover'));
 
     Route::get('/about', ['uses' => 'HomeController@about', 'as' => 'about']);
+    Route::get('/templates', ['uses' => 'HomeController@templates', 'as' => 'templates']);
     Route::get('/contact', ['uses' => 'HomeController@contact', 'as' => 'contact']);
 
 });
