@@ -79,6 +79,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('/admin/get-resources', array('as' => 'admin-get-resources', 'uses' => 'AjaxController@getResources'));
     Route::get('/admin/get-schemes', array('as' => 'admin-get-schemes', 'uses' => 'AjaxController@getSchemes'));
     Route::get('/user/uploads/check-output', array('as' => 'user-uploads-check-output', 'uses' => 'UploadController@checkOutput'));
+    Route::get('/user/uploads/run-model', array('as' => 'user-uploads-run-model', 'uses' => 'UploadController@runModel'));
 
 });
 

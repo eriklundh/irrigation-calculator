@@ -75,10 +75,41 @@ class UserController extends Controller {
                 //Logging::not_created('User', $arr);
             }
 
+            $copy1 = copy('output/crops.xlsx', 'uploads/'.$user->id.'$crops.xlsx');
+            if($copy1==true) $state='1'; else $state='0';
+            $copy2 = copy('output/soils.xlsx', 'uploads/'.$user->id.'$soils.xlsx');
+            if($copy2==true) $state.='-1'; else $state.='-0';
+            $copy3 = copy('output/efficiency.xlsx', 'uploads/'.$user->id.'$efficiency.xlsx');
+            if($copy3==true) $state.='-1'; else $state.='-0';
+            $copy4 = copy('output/yield.xlsx', 'uploads/'.$user->id.'$yield.xlsx');
+            if($copy4==true) $state.='-1'; else $state.='-0';
+
+            $state .= '-0-0-0-0-0';
             $upload = Upload::create(array(
                 'userId' => $user->id,
-                'state'  => '0-0-0-0-0-0-0-0-0'
+                'state'  => $state
             ));
+
+            if($copy1==true) {
+                $upload->crop = 'crops.xlsx';
+                $upload->crop_at = date('Y-m-d H:i:s');
+                $upload->save();
+            }
+            if($copy2==true) {
+                $upload->soil = 'soils.xlsx';
+                $upload->soil_at = date('Y-m-d H:i:s');
+                $upload->save();
+            }
+            if($copy3==true) {
+                $upload->efficiency = 'efficiency.xlsx';
+                $upload->efficiency_at = date('Y-m-d H:i:s');
+                $upload->save();
+            }
+            if($copy4==true) {
+                $upload->yield = 'yield.xlsx';
+                $upload->yield_at = date('Y-m-d H:i:s');
+                $upload->save();
+            }
         }
 
         return  redirect()->route('admin-users-list')

@@ -22,6 +22,14 @@ $( document ).ready(function() {
     if(output_ready==false)
         setInterval(check_output, 5000);
 
+    $("input[name='climate_model']").change(function(){
+        $("#weather_data_div").css("display", "block");
+    });
+
+    $("input[name='model']").change(function(){
+        $("#kml_div").css("display", "block");
+    });
+
 });
 
 function get_ajax_url(value) {
@@ -59,6 +67,24 @@ function check_output() {
             //console.log(obj.ready);
             if(obj.ready==true)
                 window.location.reload();
+        },
+        error: function(xhr) {}
+    });
+}
+
+function run_model() {
+    var url = get_ajax_url('run-model');
+    $.ajax({
+        url: url,
+        type: "get",
+        async: false,
+        success: function(response) {
+            var obj = jQuery.parseJSON(response);
+            if(obj.state==0)
+                alert('Please upload '+obj.type+' file!');
+            else if(obj.state==1)
+                alert('Please waite until '+obj.type+' file is ready for processing');
+            else window.location.reload();
         },
         error: function(xhr) {}
     });

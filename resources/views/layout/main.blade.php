@@ -29,6 +29,7 @@
     @if(Session::has('global'))
         <div class="container">
             <div class="row">
+                <br>
                 <div class="col-md-6 col-md-offset-3 center notification">{{ Session::get('global') }}</div>
             </div>
         </div>
@@ -80,6 +81,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-filestyle.min.js') }}"> </script>
     <script src="{{ asset('js/main.js') }}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('js/ie10-viewport-bug-workaround.js') }}"></script>

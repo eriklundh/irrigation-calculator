@@ -13,7 +13,22 @@ body {
 }
 
 .first-column {
-    width: 110px;
+    width: 150px;
+}
+.file-name {
+    width: 30%;
+}
+.choose-file {
+    width: 20%;
+}
+.upload-time {
+    width: 15%;
+}
+.state {
+    width: 10%;
+}
+.upload-button {
+    width: 10%;
 }
 .center {
     text-align: center;
