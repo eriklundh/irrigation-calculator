@@ -24,7 +24,7 @@
                         echo "<li id='users' ><a href=\"".URL::route('admin-users-list')."\">Users</a></li>";
                     }
                     if($user_role_name=='USER'){
-                        echo "<li id='uploads'><a href=\"".URL::route('user-uploads-list')."\">Model Specifications</a></li>";
+                        echo "<li id='uploads'><a href=\"".URL::route('user-uploads-list')."\">Specifications</a></li>";
                     }
                     ?>
                 @endif

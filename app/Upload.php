@@ -13,7 +13,7 @@ class Upload extends Model {
     }
 
     public static function getClimateModels() {
-        return array('SatelliteRaw'=>'SatelliteRaw', 'StationRaw'=>'StationRaw', 'SatelliteBiasCorrected'=>'SatelliteBiasCorrected', 'SelfSuppliedStation'=>'SelfSuppliedStation', 'ClimChange'=>'ClimChange');
+        return array('SatelliteRaw'=>'SatelliteRaw', 'StationRaw'=>'StationRaw', 'SelfSuppliedStation'=>'SelfSuppliedStation');
     }
 
     public static function getAllUploads() {

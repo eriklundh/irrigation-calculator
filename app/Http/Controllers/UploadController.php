@@ -61,12 +61,19 @@ class UploadController extends Controller {
                 $upload = $uploads->first();
                 $upload->crop = $file->getClientOriginalName();
                 $upload->crop_at = date('Y-m-d H:i:s');
-                $upload->save();
                 $pre_state_arr[0]=1;
+
+                $state = $pre_state_arr[0];
+                for($i=1; $i<count($pre_state_arr); $i++)
+                    $state .= '-'.$pre_state_arr[$i];
+                $upload->state = $state;
+                $upload->save();
             } else {
                 return  redirect()->route('user-uploads-list')
                     ->with('global', 'The crop file cannot be uploaded. Please try again!');
             }
+            return  redirect()->route('user-uploads-list')
+                    ->with('global', 'The crop file has been successfully uploaded!');
         }
         if($request->file('soil')) {
             $file = $request->file('soil');
@@ -80,12 +87,19 @@ class UploadController extends Controller {
                 $upload = $uploads->first();
                 $upload->soil = $file->getClientOriginalName();
                 $upload->soil_at = date('Y-m-d H:i:s');
-                $upload->save();
                 $pre_state_arr[1]=1;
+
+                $state = $pre_state_arr[0];
+                for($i=1; $i<count($pre_state_arr); $i++)
+                    $state .= '-'.$pre_state_arr[$i];
+                $upload->state = $state;
+                $upload->save();
             } else {
                 return  redirect()->route('user-uploads-list')
                     ->with('global', 'The soil file cannot be uploaded. Please try again!');
             }
+            return  redirect()->route('user-uploads-list')
+                    ->with('global', 'The soil file has been successfully uploaded!');
         }
         if($request->file('efficiency')) {
             $file = $request->file('efficiency');
@@ -99,12 +113,19 @@ class UploadController extends Controller {
                 $upload = $uploads->first();
                 $upload->efficiency = $file->getClientOriginalName();
                 $upload->efficiency_at = date('Y-m-d H:i:s');
-                $upload->save();
                 $pre_state_arr[2]=1;
+
+                $state = $pre_state_arr[0];
+                for($i=1; $i<count($pre_state_arr); $i++)
+                    $state .= '-'.$pre_state_arr[$i];
+                $upload->state = $state;
+                $upload->save();
             } else {
                 return  redirect()->route('user-uploads-list')
-                    ->with('global', 'The efficiency file cannot be uploaded. Please try again!');
+                    ->with('global', 'The irrigation efficiency file cannot be uploaded. Please try again!');
             }
+            return  redirect()->route('user-uploads-list')
+                    ->with('global', 'The irrigation efficiency file has been successfully uploaded!');
         }
         if($request->file('yield')) {
             $file = $request->file('yield');
@@ -118,16 +139,24 @@ class UploadController extends Controller {
                 $upload = $uploads->first();
                 $upload->yield = $file->getClientOriginalName();
                 $upload->yield_at = date('Y-m-d H:i:s');
-                $upload->save();
                 $pre_state_arr[3]=1;
+
+                $state = $pre_state_arr[0];
+                for($i=1; $i<count($pre_state_arr); $i++)
+                    $state .= '-'.$pre_state_arr[$i];
+                $upload->state = $state;
+                $upload->save();
             } else {
                 return  redirect()->route('user-uploads-list')
-                    ->with('global', 'The yield file cannot be uploaded. Please try again!');
+                    ->with('global', 'The crop yield file cannot be uploaded. Please try again!');
             }
+            return  redirect()->route('user-uploads-list')
+                    ->with('global', 'The crop yield file has been successfully uploaded!');
         }
-        if($request->get('climate_model')!='' && $request->file('weather_data')) {
-            $file = $request->file('weather_data');
-            if($file->getClientOriginalName()!='WeatherData.xlsx')
+        if($request->get('climate_model')!='') { // && $request->file('weather_data')) {
+            if($request->get('climate_model')=='SelfSuppliedStation')
+                $file = $request->file('weather_data');
+            if($request->get('climate_model')=='SelfSuppliedStation' && $file->getClientOriginalName()!='WeatherData.xlsx')
                 return  redirect()->route('user-uploads-list')
                     ->with('global', 'The weather data file name should be "WeatherData.xlsx". Please try again!');
 
@@ -142,39 +171,53 @@ class UploadController extends Controller {
                 else
                     fwrite($file1, $cm."\t\t0\n");
             fclose($file1);
+            $uploads = Upload::getUploads();
+            $upload = $uploads->first();
+            $upload->climate_model = $climate_model_value;
+            $upload->climate_model_at = date('Y-m-d H:i:s');
+            $pre_state_arr[4]=1;
 
-            $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
-            $upload_success = $file->move($destinationPath, $filename);
-            if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
-                $upload->climate_model = $climate_model_value;
-                $upload->climate_model_at = date('Y-m-d H:i:s');
-                $upload->weather_data = $file->getClientOriginalName();
-                $upload->weather_data_at = date('Y-m-d H:i:s');
-                $upload->save();
-                $pre_state_arr[4]=1;
-                $pre_state_arr[5]=1;
-            } else {
-                return  redirect()->route('user-uploads-list')
-                    ->with('global', 'The weather data file cannot be uploaded. Please try again!');
+            $state = $pre_state_arr[0];
+            for($i=1; $i<count($pre_state_arr); $i++)
+                $state .= '-'.$pre_state_arr[$i];
+            $upload->state = $state;
+            $upload->save();
+
+            if($request->get('climate_model')=='SelfSuppliedStation') {
+                $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
+                $upload_success = $file->move($destinationPath, $filename);
+                if( $upload_success ) {
+                    $uploads = Upload::getUploads();
+                    $upload = $uploads->first();
+                    $upload->weather_data = $file->getClientOriginalName();
+                    $upload->weather_data_at = date('Y-m-d H:i:s');
+                    $pre_state_arr[5]=1;
+
+                    $state = $pre_state_arr[0];
+                    for($i=1; $i<count($pre_state_arr); $i++)
+                        $state .= '-'.$pre_state_arr[$i];
+                    $upload->state = $state;
+                    $upload->save();
+                } else {
+                    return  redirect()->route('user-uploads-list')
+                        ->with('global', 'The weather data file cannot be uploaded. Please try again!');
+                }
             }
+            return  redirect()->route('user-uploads-list')
+                    ->with('global', 'Climate Model has been successfully uploaded!');
         }
         if($request->get('model')!='' && $request->file('kml')) {
             $file = $request->file('kml');
-            //return redirect()->route('user-uploads-list')
-            //    ->with('global', 'maxat '.$request->get('model').substr($file->getClientOriginalName(), 0, 3).' '.$file->getClientOriginalName());
             if($request->get('model')=='Spatial Data') {
-                if(substr($file->getClientOriginalName(),0,3)!='IC_' && substr($file->getClientOriginalName(), -4)!='.kml')
+                if(substr($file->getClientOriginalName(), -4)!='.kml')
                     return  redirect()->route('user-uploads-list')
-                        ->with('global', 'The kml file name should start with "IC_" and the extension should be ".kml". Please try again!');
+                        ->with('global', 'The file has to be ".kml" file. Please try again!');
             }
             else if($request->get('model')=='Tabular Data') {
                 if(substr($file->getClientOriginalName(), -5)!='.xlsx')
                     return  redirect()->route('user-uploads-list')
-                        ->with('global', 'The kml file extension should be ".xml". Please try again!');
+                        ->with('global', 'The Field Data has to be provided in ".xlsx" Format.');
             }
-
 
             $file1 = fopen("uploads/".User::getSignedInUserId()."$"."ModelType.txt", "w+") or exit("Unable to open txt file!");
             $models = Upload::getModels();
@@ -199,17 +242,25 @@ class UploadController extends Controller {
                 $upload->kml_at = date('Y-m-d H:i:s');
                 $upload->output = '';
                 $upload->output_at = '';
-                $upload->save();
                 $pre_state_arr[6]=1;
                 $pre_state_arr[7]=1;
                 $pre_state_arr[8]=0;
+
+                $state = $pre_state_arr[0];
+                for($i=1; $i<count($pre_state_arr); $i++)
+                    $state .= '-'.$pre_state_arr[$i];
+                $upload->state = $state;
+                $upload->save();
 
             } else {
                 return  redirect()->route('user-uploads-list')
                     ->with('global', 'The kml file cannot be uploaded. Please try again!');
             }
+            return  redirect()->route('user-uploads-list')
+                    ->with('global', 'Model Type has been successfully uploaded!');
         }
 
+        /*
         $state = $pre_state_arr[0];
         for($i=1; $i<count($pre_state_arr); $i++)
             $state .= '-'.$pre_state_arr[$i];
@@ -217,7 +268,7 @@ class UploadController extends Controller {
         $uploads = Upload::getUploads();
         $upload = $uploads->first();
         $upload->state = $state;
-        $upload->save();
+        $upload->save();*/
 
         //Logging::created('Water Level', array($upload_successful_for_the_last_two_weeks));
         return  redirect()->route('user-uploads-list')->with('global', '');//$upload_successful_for_the_last_two_weeks);
@@ -309,16 +360,17 @@ class UploadController extends Controller {
         $upload = $uploads->first();
         $state_arr = explode('-', $upload->state);
         for($i=0; $i<=7; $i++) {
-            if($state_arr[$i]==0) {
+            if($i==5) continue;
+            else if($state_arr[$i]==0) {
                 switch ($i) {
                     case 0: return json_encode(array('type'=>'Crop', 'state'=>$state_arr[$i])); break;
                     case 1: return json_encode(array('type'=>'Soil', 'state'=>$state_arr[$i])); break;
-                    case 2: return json_encode(array('type'=>'Efficiency', 'state'=>$state_arr[$i])); break;
-                    case 3: return json_encode(array('type'=>'Yield', 'state'=>$state_arr[$i])); break;
-                    case 4: return json_encode(array('type'=>'Weather Data', 'state'=>$state_arr[$i])); break;
+                    case 2: return json_encode(array('type'=>'Irrigation Efficiency', 'state'=>$state_arr[$i])); break;
+                    case 3: return json_encode(array('type'=>'Crop Yield', 'state'=>$state_arr[$i])); break;
+                    case 4: return json_encode(array('type'=>'Climate Model', 'state'=>$state_arr[$i])); break;
                     case 5: return json_encode(array('type'=>'Weather Data', 'state'=>$state_arr[$i])); break;
-                    case 6: return json_encode(array('type'=>'KML', 'state'=>$state_arr[$i])); break;
-                    case 7: return json_encode(array('type'=>'KML', 'state'=>$state_arr[$i])); break;
+                    case 6: return json_encode(array('type'=>'Model Type', 'state'=>$state_arr[$i])); break;
+                    case 7: return json_encode(array('type'=>'Model Type', 'state'=>$state_arr[$i])); break;
                 }
             }
         }

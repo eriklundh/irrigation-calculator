@@ -23,7 +23,10 @@ $( document ).ready(function() {
         setInterval(check_output, 5000);
 
     $("input[name='climate_model']").change(function(){
-        $("#weather_data_div").css("display", "block");
+        if($("input:radio[name=climate_model]:checked").val()=='SelfSuppliedStation')
+            $("#weather_data_div").css("display", "block");
+        else
+            $("#weather_data_div").css("display", "none");
     });
 
     $("input[name='model']").change(function(){

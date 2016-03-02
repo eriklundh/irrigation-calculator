@@ -29,7 +29,7 @@
                     A number of input files are necessary to be able to run the model for your specific location. The format and names of these input files must not be changed except if stated otherwise. These files can be downloaded below, edited and stored on your local device. When starting the model you will be asked to upload each file individually.
                 </p>
                 <p class="justify">
-                    Please familiarize yourself with the model (in the <a href="{{ URL::route('about') }}">About</a> section) and the format of the input files (in the <a href="{{ URL::route('templates') }}">Templates</a> section).
+                    Please familiarize yourself with the model (in the <a href="{{ URL::route('about') }}">About</a> page) and the format of the input files (in the <a href="{{ URL::route('templates') }}">Templates</a> page).
                 </p>
             </div>
         </div>
