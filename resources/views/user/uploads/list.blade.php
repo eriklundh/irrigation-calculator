@@ -818,6 +818,29 @@
                         @elseif($diff['seconds']==0)
                             Just now
                         @endif
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                @for($i=0; $i<count($overview_table); $i++)
+                                    @if($i==0)
+                                        <thead>
+                                        <tr>
+                                            @for($j=0; $j<count($overview_table[$i]); $j++)
+                                                <th>{{ $overview_table[$i][$j].' '.$overview_table[$i+1][$j] }}</th>
+                                            @endfor
+                                        </tr>
+                                        </thead>
+                                    @elseif($i>=2)
+                                        <tbody>
+                                        <tr>
+                                            @for($j=0; $j<count($overview_table[$i]); $j++)
+                                            <td>{{ $overview_table[$i][$j] }}</td>
+                                            @endfor
+                                        </tr>
+                                        </tbody>
+                                    @endif
+                                @endfor
+                            </table>
+                        </div>
                     @endif
                 </div>
             </div>
