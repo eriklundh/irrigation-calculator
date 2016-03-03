@@ -86,7 +86,7 @@ function run_model() {
             if(obj.state==0)
                 alert('Please upload '+obj.type+' file!');
             else if(obj.state==1)
-                alert('Please waite until '+obj.type+' file is ready for processing');
+                alert('Please wait few seconds until '+obj.type+' file is ready for processing');
             else window.location.reload();
         },
         error: function(xhr) {}

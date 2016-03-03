@@ -296,7 +296,8 @@ class UploadController extends Controller {
             for($i=0; $i<count($state_arr)-1; $i++)
                 if($state_arr[$i]==1) {
                     if($i==7) {
-                        if($state_arr[8]==1){}
+                        if($state_arr[8]==1){
+                        }
                         else continue;
                     }
                     $state_arr[$i]=2;
@@ -371,6 +372,21 @@ class UploadController extends Controller {
                     case 5: return json_encode(array('type'=>'Weather Data', 'state'=>$state_arr[$i])); break;
                     case 6: return json_encode(array('type'=>'Model Type', 'state'=>$state_arr[$i])); break;
                     case 7: return json_encode(array('type'=>'Model Type', 'state'=>$state_arr[$i])); break;
+                }
+            }
+        }
+        for($i=0; $i<=6; $i++) {
+            if($i==5 && $upload->climate_model=='SelfSuppliedStation') continue;
+            else if($state_arr[$i]==1) {
+                switch ($i) {
+                    case 0: return json_encode(array('type'=>'Crop', 'state'=>$state_arr[$i])); break;
+                    case 1: return json_encode(array('type'=>'Soil', 'state'=>$state_arr[$i])); break;
+                    case 2: return json_encode(array('type'=>'Irrigation Efficiency', 'state'=>$state_arr[$i])); break;
+                    case 3: return json_encode(array('type'=>'Crop Yield', 'state'=>$state_arr[$i])); break;
+                    case 4: return json_encode(array('type'=>'Climate Model', 'state'=>$state_arr[$i])); break;
+                    case 5: return json_encode(array('type'=>'Weather Data', 'state'=>$state_arr[$i])); break;
+                    case 6: return json_encode(array('type'=>'Model Type', 'state'=>$state_arr[$i])); break;
+                    //case 7: return json_encode(array('type'=>'Model Type', 'state'=>$state_arr[$i])); break;
                 }
             }
         }
