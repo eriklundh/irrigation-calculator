@@ -43,7 +43,7 @@ class UploadController extends Controller {
             $file = fopen('zip://'.env('PUBLIC_ROOT').'/output/'.$upload->userId.'$'.$upload->output.'#OverviewTable.txt', 'r') or exit("Unable to open OverviewTable.txt file!");
             //$file = fopen('zip://C:/xampp/htdocs/ic.com/public/output/'.$upload->userId.'$'.$upload->output.'#OverviewTable.txt', 'r') or exit("Unable to open OverviewTable.txt file!");
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
         }
         $overview_table = array();
         if($file) {
