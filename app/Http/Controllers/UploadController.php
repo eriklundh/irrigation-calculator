@@ -38,15 +38,22 @@ class UploadController extends Controller {
         // Read from the file
         //$file = fopen(env('PUBLIC_ROOT').'/output/'.$upload->userId.'$'.'OverviewTable.txt', 'r+') or exit("Unable to open OverviewTable.txt file!");
         //$file = fopen('output/'.$upload->userId.'$'.'OverviewTable.txt', 'r+') or exit("Unable to open OverviewTable.txt file!");
-        $file = fopen('zip://'.env('PUBLIC_ROOT').'/output/'.$upload->userId.'$'.$upload->output.'#OverviewTable.txt', 'r') or exit("Unable to open OverviewTable.txt file!");
-        //$file = fopen('zip://C:/xampp/htdocs/ic.com/public/output/'.$upload->userId.'$'.$upload->output.'#OverviewTable.txt', 'r') or exit("Unable to open OverviewTable.txt file!");
-        $overview_table = array();
-        while (!feof($file)) {
-            $line = fgets($file);
-            $temp_arr = explode(',', $line);
-            array_push($overview_table, $temp_arr);
+        $file=false;
+        try {
+            $file = fopen('zip://'.env('PUBLIC_ROOT').'/output/'.$upload->userId.'$'.$upload->output.'#OverviewTable.txt', 'r') or exit("Unable to open OverviewTable.txt file!");
+            //$file = fopen('zip://C:/xampp/htdocs/ic.com/public/output/'.$upload->userId.'$'.$upload->output.'#OverviewTable.txt', 'r') or exit("Unable to open OverviewTable.txt file!");
         }
-        fclose($file);
+        catch(\Exception $e) {
+        }
+        $overview_table = array();
+        if($file) {
+            while (!feof($file)) {
+                $line = fgets($file);
+                $temp_arr = explode(',', $line);
+                array_push($overview_table, $temp_arr);
+            }
+            fclose($file);
+        }
 
         return view('user.uploads.list', compact('user_role_name'), compact('models'))
                 ->with(compact('climateModels'))
