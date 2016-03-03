@@ -820,7 +820,7 @@
                         @endif
                         <h4>Summary statistics of all fields calculated</h4>
                         <p class="justify" style="text-align: center">
-                            Below the mean annual of the water balance are summarized for each field calculated
+                            Below the mean values of the water balance are summarized for each field calculated
                         </p>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
