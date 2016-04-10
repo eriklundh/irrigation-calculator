@@ -24,6 +24,7 @@ class CreateUploadsTable extends Migration
             $table->string('model', 255);
             $table->string('kml', 255);
             $table->string('output', 255);
+            $table->string('climate_data', 255);
             $table->string('state', 255);
             $table->dateTime('crop_at');
             $table->dateTime('soil_at');
@@ -34,6 +35,7 @@ class CreateUploadsTable extends Migration
             $table->dateTime('model_at');
             $table->dateTime('kml_at');
             $table->dateTime('output_at');
+            $table->dateTime('climate_data_at');
             $table->timestamps();
         });
     }

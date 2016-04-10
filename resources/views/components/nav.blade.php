@@ -24,6 +24,7 @@
                         echo "<li id='users' ><a href=\"".URL::route('admin-users-list')."\">Users</a></li>";
                     }
                     if($user_role_name=='USER'){
+                        echo "<li id='climate-data'><a href=\"".URL::route('user-climate-data')."\">Climate Data</a></li>";
                         echo "<li id='uploads'><a href=\"".URL::route('user-uploads-list')."\">Specifications</a></li>";
                     }
                     ?>

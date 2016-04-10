@@ -87,7 +87,7 @@
             <p class="justify">
                 If you wish to edit default values you can do so by uploading your own file by clicking on 'Upload'’. Make sure you use the required format specified in <a href="{{ URL::route('templates') }}">Templates</a>.
             </p>
-            <span class="bold">Crop</span>
+            <span class="bold">Crop:</span>
             <a href="{{ env('PUBLIC_ROOT').'/uploads/'.$upload->userId.'$'.$upload->crop }}" target="_blank">
                 {{ $upload->crop }}
             </a>
@@ -146,11 +146,11 @@
             </form>
 
 
-            <span class="bold">Soil</span>
+            <span class="bold">Soil:</span>
             <a href="{{ env('PUBLIC_ROOT').'/uploads/'.$upload->userId.'$'.$upload->soil }}" target="_blank">
                 {{ $upload->soil }}
             </a>
-            <span class="bold">Upload Time</span>
+            <span class="bold">Upload Time:</span>
             <?php $diff = App\Functions::getDateTimeDifferences($upload->soil_at, $now); ?>
             @if(strtotime($upload->soil_at)==0)
             @elseif($diff['years']>0 || $diff['months']>0)
@@ -186,7 +186,7 @@
             @elseif($diff['seconds']==0)
             Just now
             @endif
-            <span class="bold">State</span>
+            <span class="bold">State:</span>
             {{ $state[1] }}
             <form action='{{ URL::route("user-uploads-upload") }}' method='post' enctype="multipart/form-data">
                 <table>
@@ -204,11 +204,11 @@
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
             </form>
 
-            <span class="bold">Irrigation Efficiency</span>
+            <span class="bold">Irrigation Efficiency:</span>
             <a href="{{ env('PUBLIC_ROOT').'/uploads/'.$upload->userId.'$'.$upload->efficiency }}" target="_blank">
                 {{ $upload->efficiency }}
             </a>
-            <span class="bold">Upload Time</span>
+            <span class="bold">Upload Time:</span>
             <?php $diff = App\Functions::getDateTimeDifferences($upload->efficiency_at, $now); ?>
             @if(strtotime($upload->efficiency_at)==0)
             @elseif($diff['years']>0 || $diff['months']>0)
@@ -244,7 +244,7 @@
             @elseif($diff['seconds']==0)
             Just now
             @endif
-            <span class="bold">State</span>
+            <span class="bold">State:</span>
             {{ $state[2] }}
             <form action='{{ URL::route("user-uploads-upload") }}' method='post' enctype="multipart/form-data">
                 <table>
@@ -263,11 +263,11 @@
             </form>
 
 
-            <span class="bold">Crop Yield</span>
+            <span class="bold">Crop Yield:</span>
             <a href="{{ env('PUBLIC_ROOT').'/uploads/'.$upload->userId.'$'.$upload->yield }}" target="_blank">
                 {{ $upload->yield }}
             </a>
-            <span class="bold">Upload Time</span>
+            <span class="bold">Upload Time:</span>
             <?php $diff = App\Functions::getDateTimeDifferences($upload->yield_at, $now); ?>
             @if(strtotime($upload->yield_at)==0)
             @elseif($diff['years']>0 || $diff['months']>0)
@@ -303,7 +303,7 @@
             @elseif($diff['seconds']==0)
             Just now
             @endif
-            <span class="bold">State</span>
+            <span class="bold">State:</span>
             {{ $state[3] }}
             <form action='{{ URL::route("user-uploads-upload") }}' method='post' enctype="multipart/form-data">
                 <table>
@@ -327,7 +327,7 @@
             <p class="justify">
                 The model can be run with Climate Data from Satellites (‘Satellite Data’), WMO weather stations (‘Station Data’) or self supplied data (‘Self-supplied Data’). A description of the available satellite and weather station data is provided in <a href="{{ URL::route('about') }}">About</a>. Be aware that using the option ‘Station Data’ may cause the model to run considerably longer.
             </p>
-            <span class="bold">Model</span>
+            <span class="bold">Model:</span>
             @if($upload->climate_model=='SelfSuppliedStation')
                 {{ $upload->climate_model }}
                 <a href="{{ env('PUBLIC_ROOT').'/uploads/'.$upload->userId.'$'.$upload->weather_data }}" target="_blank">
@@ -336,7 +336,7 @@
             @else
                 {{ $upload->climate_model }}
             @endif
-            <span class="bold">Upload Time</span>
+            <span class="bold">Upload Time:</span>
             @if($upload->climate_model=='SelfSuppliedStation')
                 <?php $diff = App\Functions::getDateTimeDifferences($upload->weather_data_at, $now); ?>
                 @if(strtotime($upload->weather_data_at)==0)
@@ -410,7 +410,7 @@
                 Just now
                 @endif
             @endif
-            <span class="bold">State</span>
+            <span class="bold">State:</span>
             @if($upload->climate_model=='SelfSuppliedStation')
                 {{ $state[5] }}
             @else

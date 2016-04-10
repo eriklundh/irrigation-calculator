@@ -64,6 +64,28 @@ class UploadController extends Controller {
                 ->with(compact('overview_table'));
     }
 
+    // get climate data page
+    public function getClimateData() {
+        if(Auth::guest())
+            return redirect()->route('account-sign-in');
+        $user_role_name = User::getUserRoleName();
+        $uploads = Upload::getUploads();
+        $upload = $uploads->first();
+        $state_arr = explode('-', $upload->state);
+        $state = array();
+        for($i=0; $i<10; $i++)
+            if($state_arr[$i]==0)
+                $state[$i] = 'Not Uploaded';
+            else if($state_arr[$i]==1)
+                $state[$i] = 'Uploaded';
+            else if($state_arr[$i]==2)
+                $state[$i] = 'Ready for processing';
+
+        return view('user.uploads.climate_data', compact('user_role_name'))
+            ->with(compact('upload'))
+            ->with(compact('state'));
+    }
+
     // upload from the web site
     public function upload(Request $request) {
         $uploads = Upload::getUploads();
@@ -79,8 +101,6 @@ class UploadController extends Controller {
                         ->with('global', 'The crop file name should be "crops.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
                 $upload->crop = $file->getClientOriginalName();
                 $upload->crop_at = date('Y-m-d H:i:s');
                 $pre_state_arr[0]=1;
@@ -105,8 +125,6 @@ class UploadController extends Controller {
                         ->with('global', 'The soil file name should be "soils.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
                 $upload->soil = $file->getClientOriginalName();
                 $upload->soil_at = date('Y-m-d H:i:s');
                 $pre_state_arr[1]=1;
@@ -131,8 +149,6 @@ class UploadController extends Controller {
                         ->with('global', 'The efficiency file name should be "efficiency.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
                 $upload->efficiency = $file->getClientOriginalName();
                 $upload->efficiency_at = date('Y-m-d H:i:s');
                 $pre_state_arr[2]=1;
@@ -157,8 +173,6 @@ class UploadController extends Controller {
                         ->with('global', 'The yield file name should be "yield.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
                 $upload->yield = $file->getClientOriginalName();
                 $upload->yield_at = date('Y-m-d H:i:s');
                 $pre_state_arr[3]=1;
@@ -176,8 +190,13 @@ class UploadController extends Controller {
                     ->with('global', 'The crop yield file has been successfully uploaded!');
         }
         if($request->get('climate_model')!='') { // && $request->file('weather_data')) {
-            if($request->get('climate_model')=='SelfSuppliedStation')
-                $file = $request->file('weather_data');
+            if($request->get('climate_model')=='SelfSuppliedStation') {
+                if($request->file('weather_data'))
+                    $file = $request->file('weather_data');
+                else
+                    return  redirect()->route('user-uploads-list')
+                            ->with('global', 'Please attach weather data file!');
+            }
             if($request->get('climate_model')=='SelfSuppliedStation' && $file->getClientOriginalName()!='WeatherData.xlsx')
                 return  redirect()->route('user-uploads-list')
                     ->with('global', 'The weather data file name should be "WeatherData.xlsx". Please try again!');
@@ -193,8 +212,6 @@ class UploadController extends Controller {
                 else
                     fwrite($file1, $cm."\t\t0\n");
             fclose($file1);
-            $uploads = Upload::getUploads();
-            $upload = $uploads->first();
             $upload->climate_model = $climate_model_value;
             $upload->climate_model_at = date('Y-m-d H:i:s');
             $pre_state_arr[4]=1;
@@ -209,8 +226,6 @@ class UploadController extends Controller {
                 $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
                 $upload_success = $file->move($destinationPath, $filename);
                 if( $upload_success ) {
-                    $uploads = Upload::getUploads();
-                    $upload = $uploads->first();
                     $upload->weather_data = $file->getClientOriginalName();
                     $upload->weather_data_at = date('Y-m-d H:i:s');
                     $pre_state_arr[5]=1;
@@ -256,8 +271,6 @@ class UploadController extends Controller {
             $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $uploads = Upload::getUploads();
-                $upload = $uploads->first();
                 $upload->model = $model_value;
                 $upload->model_at = date('Y-m-d H:i:s');
                 $upload->kml = $file->getClientOriginalName();
@@ -281,19 +294,72 @@ class UploadController extends Controller {
             return  redirect()->route('user-uploads-list')
                     ->with('global', 'Model Type has been successfully uploaded!');
         }
+        if($request->get('climate_data_radio')!='') {
+            if($request->get('climate_data_radio')=='Coordinates') {
+                $validator = Validator::make($request->all(),
+                    array(
+                        'minLat'  => 'required|numeric|min:-90|max:90',
+                        'minLng' => 'required|numeric|min:-180|max:180',
+                        'maxLat'  => 'required|numeric|min:-90|max:90',
+                        'maxLng' => 'required|numeric|min:-180|max:180'
+                    )
+                );
+                if($validator->fails()){
+                    return  redirect()->route('user-climate-data')
+                            ->withErrors($validator)
+                            ->withInput();
+                }
 
-        /*
-        $state = $pre_state_arr[0];
-        for($i=1; $i<count($pre_state_arr); $i++)
-            $state .= '-'.$pre_state_arr[$i];
+                $file1 = fopen("uploads/".User::getSignedInUserId()."$"."CD_bBox.txt", "w+") or exit("Unable to open txt file!");
+                fwrite($file1, $request->get('minLat')."\t".$request->get('minLng')."\t".$request->get('maxLat')."\t".$request->get('maxLng'));
+                fclose($file1);
+                $upload->climate_data = 'bBox.txt';
+                $upload->climate_data_at = date('Y-m-d H:i:s');
+                $pre_state_arr[9]=1;
 
-        $uploads = Upload::getUploads();
-        $upload = $uploads->first();
-        $upload->state = $state;
-        $upload->save();*/
+                $state = $pre_state_arr[0];
+                for($i=1; $i<count($pre_state_arr); $i++)
+                    $state .= '-'.$pre_state_arr[$i];
+                $upload->state = $state;
+                $upload->save();
+
+                return redirect()->route('user-climate-data')
+                    ->with('global', 'The climate data coordinates has been successfully uploaded!');
+            }
+            else {
+                if($request->file('climate_data')){
+                    $file = $request->file('climate_data');
+                    $filename = User::getSignedInUserId().'$CD_'.$file->getClientOriginalName();
+                    if(substr($file->getClientOriginalName(), -4)!='.kml')
+                        return  redirect()->route('user-climate-data')
+                                ->with('global', 'The file has to be ".kml" file. Please try again!');
+
+                    $upload_success = $file->move($destinationPath, $filename);
+                    if( $upload_success ) {
+                        $upload->climate_data = $file->getClientOriginalName();
+                        $upload->climate_data_at = date('Y-m-d H:i:s');
+                        $pre_state_arr[9]=1;
+
+                        $state = $pre_state_arr[0];
+                        for($i=1; $i<count($pre_state_arr); $i++)
+                            $state .= '-'.$pre_state_arr[$i];
+                        $upload->state = $state;
+                        $upload->save();
+                    } else {
+                        return  redirect()->route('user-climate-data')
+                            ->with('global', 'The climate data kml file cannot be uploaded. Please try again!');
+                    }
+                    return redirect()->route('user-climate-data')
+                        ->with('global', 'The climate data kml file has been successfully uploaded!');
+                }
+                else
+                    return redirect()->route('user-climate-data')
+                        ->with('global', 'Please attach climate data kml file');
+            }
+        }
 
         //Logging::created('Water Level', array($upload_successful_for_the_last_two_weeks));
-        return  redirect()->route('user-uploads-list')->with('global', '');//$upload_successful_for_the_last_two_weeks);
+        return  redirect()->route('user-uploads-list')->with('global', 'Nothing has been uploaded');//$upload_successful_for_the_last_two_weeks);
     }
 
     // returns the number of files that should be downloaded to hydrosolutions server
@@ -302,11 +368,11 @@ class UploadController extends Controller {
         $count = 0;
         foreach($uploads as $u) {
             $state_arr = explode('-',$u->state);
-            for($i=0; $i<count($state_arr)-1; $i++)
+            for($i=0; $i<count($state_arr); $i++)
                 if($i==7) {
-                    if($state_arr[7]==1 && $state_arr[8]==1) $count++;
+                    if($state_arr[7]==1 && $state_arr[8]==1) $count++;  // wait until user clicks run model(which makes $state_arr[8]=1) for kml to be transferred
                 }
-                else if($state_arr[$i]==1) $count++;
+                else if($state_arr[$i]==1 && $i!=8) $count++;  // ignoring 'output' column by $i!=8
         }
         return $count;
     }
@@ -315,8 +381,8 @@ class UploadController extends Controller {
         $uploads = Upload::getAllUploads();
         foreach($uploads as $u) {
             $state_arr = explode('-',$u->state);
-            for($i=0; $i<count($state_arr)-1; $i++)
-                if($state_arr[$i]==1) {
+            for($i=0; $i<count($state_arr); $i++)
+                if($state_arr[$i]==1 && $i!=8) { //ignoring 'output' download by $i!=8
                     if($i==7) {
                         if($state_arr[8]==1){
                         }
@@ -337,6 +403,7 @@ class UploadController extends Controller {
                         case 5: return $u->userId.'$'.$u->weather_data; break;
                         case 6: return $u->userId.'$ModelType.txt'; break;
                         case 7: return $u->userId.'$'.$u->kml; break;
+                        case 9: return $u->userId.'$CD_'.$u->climate_data; break;
                     }
                 }
         }
@@ -377,7 +444,7 @@ class UploadController extends Controller {
         return json_encode($result);
     }
 
-    // run the model from web browser
+    // Run the model from web browser. It makes output state $state_arr[8]=1
     public function runModel() {
         $uploads = Upload::getUploads();
         $upload = $uploads->first();

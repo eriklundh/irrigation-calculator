@@ -57,6 +57,7 @@ Route::group(array('before' => 'auth'), function(){
     /* USER */
     // List UPLOAD (GET)
     Route::get('/user/uploads/list', array('as' => 'user-uploads-list', 'uses' => 'UploadController@getList'));
+    Route::get('/user/climate-data', array('as'=>'user-climate-data', 'uses'=>'UploadController@getClimateData'));
     Route::get('/user/download-file-count', array('as' => 'user-download-file-count', 'uses' => 'UploadController@downloadFileCount'));
     Route::get('/user/download-file', array('as' => 'user-download-file', 'uses' => 'UploadController@downloadFile'));
     Route::post('/user/get-output', array('as' => 'user-get-output', 'uses' => 'UploadController@getOutput'));

@@ -8,6 +8,8 @@ $( document ).ready(function() {
     else if (location.href.indexOf("contact") >= 0)
         $("#contact").addClass("active");
 
+    else if (location.href.indexOf("user/climate-data") >= 0)
+        $("#climate-data").addClass("active");
     else if (location.href.indexOf("user/uploads/list") >= 0)
         $("#uploads").addClass("active");
     else if (location.href.indexOf("admin/users/list") >= 0)
@@ -31,6 +33,19 @@ $( document ).ready(function() {
 
     $("input[name='model']").change(function(){
         $("#kml_div").css("display", "block");
+    });
+
+    $("input[name='climate_data_radio']").change(function(){
+        if($("input:radio[name=climate_data_radio]:checked").val()=='Coordinates') {
+            $("#climate_data_coordinates").css("display", "block");
+            $("#climate_data_kml").css("display", "none");
+            $("#climate_data_submit").css("display", "block");
+        }
+        else {
+            $("#climate_data_coordinates").css("display", "none");
+            $("#climate_data_kml").css("display", "block");
+            $("#climate_data_submit").css("display", "block");
+        }
     });
 
 });
