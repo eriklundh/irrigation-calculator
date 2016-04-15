@@ -776,11 +776,11 @@
                     <span class="bold">Output: </span>
                     @if($state_arr[8]==0)
                         <a class="btn btn-default btn-sm" onclick="run_model()">Run Model</a>
-                    @elseif($state_arr[8]==1)
+                    @elseif($state_arr[8]==1 || $state_arr[8]==2)
                         <span style="color:red">
                             Model in process ...
                         </span>
-                    @elseif($state_arr[8]==2)
+                    @elseif($state_arr[8]==3)
                         <span style="color:red">Ready</span>
                         <a href="{{ env('PUBLIC_ROOT').'/output/'.$upload->userId.'$'.$upload->output }}" target="_blank">{{ $upload->output }}</a>
                         <?php $diff = App\Functions::getDateTimeDifferences($upload->output_at, $now); ?>

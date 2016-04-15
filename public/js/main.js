@@ -100,8 +100,8 @@ function run_model() {
             var obj = jQuery.parseJSON(response);
             if(obj.state==0)
                 alert('Please upload '+obj.type+' file!');
-            else if(obj.state==1)
-                alert('Please wait few seconds until '+obj.type+' file is ready for processing');
+            //else if(obj.state==1)
+            //    alert('Please wait few seconds until '+obj.type+' file is ready for processing');
             else window.location.reload();
         },
         error: function(xhr) {}

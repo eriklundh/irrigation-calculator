@@ -28,4 +28,24 @@ class Upload extends Model {
         return Upload::where('userId','=',$user_id)->get();
     }
 
+    public static function uploadInputFile($file_name_with_full_path, $type) {
+        $url = Config::getHSURL();
+        $post = array(
+            'file' => new \CURLFile($file_name_with_full_path), 'user_id' => User::getSignedInUserId(),
+            'key' => Config::getKey(), 'type' => $type
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        $result = curl_exec($ch);
+        if(curl_errno($ch)){
+            $result = 'Curl error: ' . curl_error($ch);
+        }
+        curl_close ($ch);
+        return $result;
+    }
+
 }
