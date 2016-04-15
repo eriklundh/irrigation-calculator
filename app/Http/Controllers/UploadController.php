@@ -534,7 +534,7 @@ class UploadController extends Controller {
             }
         }*/
         for($i=0; $i<=7; $i++) {
-            if($i==5 && $upload->climate_model=='SelfSuppliedStation') continue;
+            if($i==5 && $upload->climate_model!='SelfSuppliedStation') continue;
             else if($state_arr[$i]==0) {
                 switch ($i) {
                     case 0: return json_encode(array('type'=>'Crop', 'state'=>$state_arr[$i])); break;
