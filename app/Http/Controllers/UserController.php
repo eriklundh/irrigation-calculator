@@ -84,7 +84,7 @@ class UserController extends Controller {
             $copy4 = copy('output/yield.xlsx', 'uploads/'.$user->id.'$yield.xlsx');
             if($copy4==true) $state.='-1'; else $state.='-0';
 
-            $state .= '-0-0-0-0-0';
+            $state .= '-0-0-0-0-0-0';
             $upload = Upload::create(array(
                 'userId' => $user->id,
                 'state'  => $state
