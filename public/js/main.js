@@ -20,9 +20,11 @@ $( document ).ready(function() {
     else
         $("#home").addClass("active");
 
-    first_check_output();
-    if(output_ready==false)
-        setInterval(check_output, 5000);
+    if (location.href.indexOf("user/uploads/list") >= 0) {
+        first_check_output();
+        if(output_ready==false)
+            setInterval(check_output, 5000);
+    }
 
     $("input[name='climate_model']").change(function(){
         if($("input:radio[name=climate_model]:checked").val()=='SelfSuppliedStation')

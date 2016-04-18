@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Config;
 use App\Role;
 use App\Upload;
 use App\User;
@@ -76,13 +77,20 @@ class UserController extends Controller {
             }
 
             $copy1 = copy('output/crops.xlsx', 'uploads/'.$user->id.'$crops.xlsx');
-            if($copy1==true) $state='1'; else $state='0';
+            $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$user->id.'$crops.xlsx', 'crop', $user->id);
+            if($copy1==true and strpos($result, 'Uploaded')!==false) $state='1'; else $state='0';
+
             $copy2 = copy('output/soils.xlsx', 'uploads/'.$user->id.'$soils.xlsx');
-            if($copy2==true) $state.='-1'; else $state.='-0';
+            $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$user->id.'$soils.xlsx', 'soil', $user->id);
+            if($copy2==true and strpos($result, 'Uploaded')!==false) $state.='-1'; else $state.='-0';
+
             $copy3 = copy('output/efficiency.xlsx', 'uploads/'.$user->id.'$efficiency.xlsx');
-            if($copy3==true) $state.='-1'; else $state.='-0';
+            $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$user->id.'$efficiency.xlsx', 'efficiency', $user->id);
+            if($copy3==true and strpos($result, 'Uploaded')!==false) $state.='-1'; else $state.='-0';
+
             $copy4 = copy('output/yield.xlsx', 'uploads/'.$user->id.'$yield.xlsx');
-            if($copy4==true) $state.='-1'; else $state.='-0';
+            $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$user->id.'$yield.xlsx', 'yield', $user->id);
+            if($copy4==true and strpos($result, 'Uploaded')!==false) $state.='-1'; else $state.='-0';
 
             $state .= '-0-0-0-0-0-0';
             $upload = Upload::create(array(

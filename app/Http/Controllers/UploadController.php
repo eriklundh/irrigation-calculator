@@ -102,7 +102,7 @@ class UploadController extends Controller {
                         ->with('global', 'The crop file name should be "crops.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'crop');
+                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'crop', User::getSignedInUserId());
                 $upload->crop = $file->getClientOriginalName();
                 $upload->crop_at = date('Y-m-d H:i:s');
                 if(strpos($result,"NOT OK") !== false) $pre_state_arr[0]=0;
@@ -131,7 +131,7 @@ class UploadController extends Controller {
                         ->with('global', 'The soil file name should be "soils.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'soil');
+                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'soil', User::getSignedInUserId());
                 $upload->soil = $file->getClientOriginalName();
                 $upload->soil_at = date('Y-m-d H:i:s');
                 if(strpos($result, "NOT OK") !== false) $pre_state_arr[1]=0;
@@ -160,7 +160,7 @@ class UploadController extends Controller {
                         ->with('global', 'The efficiency file name should be "efficiency.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'efficiency');
+                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'efficiency', User::getSignedInUserId());
                 $upload->efficiency = $file->getClientOriginalName();
                 $upload->efficiency_at = date('Y-m-d H:i:s');
                 if(strpos($result, "NOT OK")!==false) $pre_state_arr[2]=0;
@@ -189,7 +189,7 @@ class UploadController extends Controller {
                         ->with('global', 'The yield file name should be "yield.xlsx". Please try again!');
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'yield');
+                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'yield', User::getSignedInUserId());
                 $upload->yield = $file->getClientOriginalName();
                 $upload->yield_at = date('Y-m-d H:i:s');
                 if(strpos($result,"NOT OK")!==false) $pre_state_arr[3]=0;
@@ -234,7 +234,7 @@ class UploadController extends Controller {
                     fwrite($file1, $cm."\t\t0\n");
             fclose($file1);
 
-            $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."IC_ClimIn.txt", 'climate_model');
+            $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."IC_ClimIn.txt", 'climate_model', User::getSignedInUserId());
             $upload->climate_model = $climate_model_value;
             $upload->climate_model_at = date('Y-m-d H:i:s');
             if(strpos($result,"NOT OK")!==false) $pre_state_arr[4]=0;
@@ -253,7 +253,7 @@ class UploadController extends Controller {
                 $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
                 $upload_success = $file->move($destinationPath, $filename);
                 if( $upload_success ) {
-                    $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'weather_data');
+                    $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'weather_data', User::getSignedInUserId());
                     $upload->weather_data = $file->getClientOriginalName();
                     $upload->weather_data_at = date('Y-m-d H:i:s');
                     if(strpos($result,"NOT OK")!==false) $pre_state_arr[5]=0;
@@ -303,8 +303,8 @@ class UploadController extends Controller {
             $filename = User::getSignedInUserId().'$'.$file->getClientOriginalName();
             $upload_success = $file->move($destinationPath, $filename);
             if( $upload_success ) {
-                $result1 = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."ModelType.txt", 'model');
-                $result2 = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'kml');
+                $result1 = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."ModelType.txt", 'model', User::getSignedInUserId());
+                $result2 = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'kml', User::getSignedInUserId());
                 if (strpos($result2, 'MODEL ALREADY RUNNING') !== false)
                     return  redirect()->route('user-uploads-list')
                             ->with('global', "The model is in progress. Please wait!");
@@ -358,7 +358,7 @@ class UploadController extends Controller {
                 fwrite($file1, $request->get('minLat')."\t".$request->get('minLng')."\t".$request->get('maxLat')."\t".$request->get('maxLng'));
                 fclose($file1);
 
-                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."CD_bBox.txt", 'climate_data');
+                $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."CD_bBox.txt", 'climate_data', User::getSignedInUserId());
                 $upload->climate_data = 'bBox.txt';
                 $upload->climate_data_at = date('Y-m-d H:i:s');
                 if(strpos($result,"NOT OK")!==false) $pre_state_arr[9]=0;
@@ -386,7 +386,7 @@ class UploadController extends Controller {
 
                     $upload_success = $file->move($destinationPath, $filename);
                     if( $upload_success ) {
-                        $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'climate_data');
+                        $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.$filename, 'climate_data', User::getSignedInUserId());
                         $upload->climate_data = $file->getClientOriginalName();
                         $upload->climate_data_at = date('Y-m-d H:i:s');
                         if(strpos($result,"NOT OK")!==false) $pre_state_arr[9]=0;
@@ -557,7 +557,7 @@ class UploadController extends Controller {
             $state .= '-'.$state_arr[$j];
         $upload->state = $state;
         $upload->save();
-        $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."IC_ClimIn.txt", 'run_model');
+        $result = Upload::uploadInputFile(Config::getUploadBaseDirectory().'uploads/'.User::getSignedInUserId()."$"."IC_ClimIn.txt", 'run_model', User::getSignedInUserId());
         return json_encode(array('state'=>-1));
     }
 

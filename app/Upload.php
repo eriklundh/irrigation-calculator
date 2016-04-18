@@ -28,10 +28,10 @@ class Upload extends Model {
         return Upload::where('userId','=',$user_id)->get();
     }
 
-    public static function uploadInputFile($file_name_with_full_path, $type) {
+    public static function uploadInputFile($file_name_with_full_path, $type, $user_id) {
         $url = Config::getHSURL();
         $post = array(
-            'file' => new \CURLFile($file_name_with_full_path), 'user_id' => User::getSignedInUserId(),
+            'file' => new \CURLFile($file_name_with_full_path), 'user_id' => $user_id,
             'key' => Config::getKey(), 'type' => $type
         );
 
