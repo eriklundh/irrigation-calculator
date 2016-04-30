@@ -90,7 +90,14 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'minLat' => [
+            'email' => 'Absolute value of min latitude should be less than absolute value of max latitude.'
+        ],
+        'minLng' => [
+            'email' => 'Absolute value of min longitude should be less than absolute value of max longitude.'
+        ],
     ],
+    
 
     /*
     |--------------------------------------------------------------------------

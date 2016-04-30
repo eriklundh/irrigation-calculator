@@ -348,6 +348,12 @@ class UploadController extends Controller {
                         'maxLng' => 'required|numeric|min:-180|max:180'
                     )
                 );
+                $validator->sometimes('minLat', 'email', function($request) {
+                    return abs($request->get('minLat'))>abs($request->get('maxLat'));
+                });
+                $validator->sometimes('minLng', 'email', function($request) {
+                    return abs($request->get('minLng'))>abs($request->get('maxLng'));
+                });
                 if($validator->fails()){
                     return  redirect()->route('user-climate-data')
                             ->withErrors($validator)
